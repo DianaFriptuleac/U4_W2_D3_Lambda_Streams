@@ -49,20 +49,20 @@ public class Main {
         List<Product> firstOrderProducts = new ArrayList<>();  //creo la lista prodotti chiamata firstOrderProducts
         firstOrderProducts.add(products.get(9)); // Harry Potter
         firstOrderProducts.add(products.get(3)); // IPhone 15
-        Order firstOrder = new Order(1254414, "Elaborazione", LocalDate.now().plusDays(5), firstOrderProducts, mario);
+        Order firstOrder = new Order(1254414, "Elaborazione", LocalDate.of(2024, 3, 15), LocalDate.now().plusDays(5), firstOrderProducts, mario);
         myOrders.add(firstOrder);
 
         // Ordine 2: con "How to Catch an Elf" e "Latte in polvere"
         List<Product> secondOrderProducts = new ArrayList<>();
         secondOrderProducts.add(products.get(2)); // How to Catch an Elf
         secondOrderProducts.add(products.get(8)); // Latte in polvere
-        Order secondOrder = new Order(1254415, "Spedito", LocalDate.now().plusDays(2), secondOrderProducts, anna);
+        Order secondOrder = new Order(1254415, "Spedito", LocalDate.of(2024, 7, 10), LocalDate.now().plusDays(2), secondOrderProducts, anna);
         myOrders.add(secondOrder);
 
         // Ordine 3: con "Culla"
         List<Product> thirdOrderProducts = new ArrayList<>();
         thirdOrderProducts.add(products.get(7)); // Culla
-        Order thirdOrder = new Order(1254416, "Preso in carico", LocalDate.now().plusDays(6), thirdOrderProducts, carlo);
+        Order thirdOrder = new Order(1254416, "Preso in carico", LocalDate.of(2024, 7, 10), LocalDate.now().plusDays(6), thirdOrderProducts, carlo);
         myOrders.add(thirdOrder);
 
         // Filtro gli ordini che contengono prodotti della categoria "Baby"
@@ -72,7 +72,7 @@ public class Main {
         listOfBabyOrders.forEach(System.out::println);
 
 
-        System.out.println("--------------------Lista categoria Boys con sconto del 10%--------------------");
+        System.out.println("--------------------Ex3 Lista categoria Boys con sconto del 10%--------------------");
 
         // Filtro i prodotti della categoria "Boys" e applico lo sconto del 10% usando map
         List<Product> boysProductsWithDiscount = products.stream()
@@ -90,6 +90,27 @@ public class Main {
             System.out.println("Categoria: " + product.getCategory());
             System.out.println("Prezzo (con sconto): " + product.getPrice());
             System.out.println("--------------------------");
+        }
+
+        System.out.println("--------------------Ex 4 Clienti livello 2 tra Feb e Set 2024--------------------");
+        LocalDate inizio = LocalDate.of(2024, 2, 1);
+        LocalDate fine = LocalDate.of(2024, 9, 1);
+
+        List<Order> filteredOrders = myOrders.stream()
+                .filter(order -> order.getCustomer().getTier() == 2 &&
+                        !order.getOrderDate().isBefore(inizio) &&
+                        !order.getOrderDate().isAfter(fine))
+                .collect(Collectors.toList());  // Filtro solo gli ordini dei clienti di livello 2 e tra le date
+
+// Stampo la lista con nome del cliente, tier e date per gli ordini filtrati
+        for (Order order : filteredOrders) {  // Ora itero su `filteredOrders`
+            for (Product product : order.getProducts()) {
+                System.out.println("Nome prodotto: " + product.getName() + "-" + product.getCategory());
+                System.out.println("Cliente: " + order.getCustomer().getName() + " (Tier: " + order.getCustomer().getTier() + ")");
+                System.out.println("Data ordine: " + order.getOrderDate());
+                System.out.println("Data consegna: " + order.getDeliveryDate());
+                System.out.println("--------------------------");
+            }
         }
     }
 
