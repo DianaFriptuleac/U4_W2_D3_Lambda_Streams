@@ -5,6 +5,7 @@ import streams.Product;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -27,9 +28,9 @@ public class Main {
         products.forEach(System.out::println);
 
         System.out.println("--------------------Ex1 Lista categoria Books--------------------");
-        List<Product> listOfBooks = Product.listBook(products);
 
-        // Stampo la lista dei prodotti della categoria Books
+        // Filtro e stampa i libri con prezzo superiore a 100
+        List<Product> listOfBooks = listBook(products);
         listOfBooks.forEach(System.out::println);
 
         System.out.println("--------------------Ex2 Lista categoria Baby--------------------");
@@ -39,33 +40,49 @@ public class Main {
         Customer anna = new Customer(25256122, "Anna", 2);
         Customer carlo = new Customer(222, "Carlo", 3);
 
-        // Creazione li ordini
+        // Creo gli ordini
         List<Order> myOrders = new ArrayList<>();
 
         // Ordine 1: con "Harry Potter" e "IPhone 15"
-        List<Product> firstOrderProducts = new ArrayList<>();
+        List<Product> firstOrderProducts = new ArrayList<>();  //creo la lista prodotti chiamata firstOrderProducts
         firstOrderProducts.add(products.get(9)); // Harry Potter
         firstOrderProducts.add(products.get(3)); // IPhone 15
-        Order firstOrder = new Order(1254414, "Elaborazione", LocalDate.now(), LocalDate.now().plusDays(5), firstOrderProducts, mario);
+        Order firstOrder = new Order(1254414, "Elaborazione", LocalDate.now().plusDays(5), firstOrderProducts, mario);
         myOrders.add(firstOrder);
 
         // Ordine 2: con "How to Catch an Elf" e "Latte in polvere"
         List<Product> secondOrderProducts = new ArrayList<>();
         secondOrderProducts.add(products.get(2)); // How to Catch an Elf
         secondOrderProducts.add(products.get(8)); // Latte in polvere
-        Order secondOrder = new Order(1254415, "Spedito", LocalDate.now(), LocalDate.now().plusDays(2), secondOrderProducts, anna);
+        Order secondOrder = new Order(1254415, "Spedito", LocalDate.now().plusDays(2), secondOrderProducts, anna);
         myOrders.add(secondOrder);
 
         // Ordine 3: con "Culla"
         List<Product> thirdOrderProducts = new ArrayList<>();
         thirdOrderProducts.add(products.get(7)); // Culla
-        Order thirdOrder = new Order(1254416, "Preso in carico", LocalDate.now(), LocalDate.now().plusDays(6), thirdOrderProducts, carlo);
+        Order thirdOrder = new Order(1254416, "Preso in carico", LocalDate.now().plusDays(6), thirdOrderProducts, carlo);
         myOrders.add(thirdOrder);
 
         // Filtro gli ordini che contengono prodotti della categoria "Baby"
-        List<Order> listOfBabyOrders = Order.ordinaBaby(myOrders);
+        List<Order> listOfBabyOrders = ordinaBaby(myOrders);
 
         // Stampo gli ordini che contengono prodotti della categoria "Baby"
         listOfBabyOrders.forEach(System.out::println);
+    }
+
+    // Metodo per filtrare libri con prezzo > 100
+    public static List<Product> listBook(List<Product> products) {
+        return products.stream()
+                .filter(p -> p.getCategory().equals("Books") && p.getPrice() > 100) // Filtro per categoria Books e prezzo > 100
+                .collect(Collectors.toList()); // Ritorno la lista filtrata
+    }
+
+    // Metodo per filtrare ordini con prodotti della categoria "Baby"
+    public static List<Order> ordinaBaby(List<Order> babyOrders) {
+        return babyOrders.stream()  // Creo uno stream dai prodotti di ogni ordine
+                .filter(myOrder -> myOrder.getProducts()
+                        .stream().anyMatch(product -> product.getCategory()
+                                .equalsIgnoreCase("Baby")))  // Se almeno un prodotto è della categoria "Baby"; equalsIgnoreCase non case sensitive.
+                .collect(Collectors.toList());
     }
 }

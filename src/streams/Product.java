@@ -1,8 +1,5 @@
 package streams;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class Product {
     private long id;
     private String name;
@@ -16,15 +13,7 @@ public class Product {
         this.price = price;
     }
 
-//Set and Get
-
-    public static List<Product> listBook(List<Product> products) {     //List<Product>- tipo di ritorno;  Accetta come parametro una lista di Product con il nome products
-        return products.stream().filter(product -> product.getCategory()
-                        .equalsIgnoreCase("Books")).  //Verifico se la categoria e "Books" (non e case sensitive)
-                filter(product -> product.getPrice() > 100)  //filtro per prezzo
-                .collect(Collectors.toList());//inserisci i prodotti filtrati in una lista
-    }
-
+    //Set and Get
     public long getId() {
         return id;
     }
