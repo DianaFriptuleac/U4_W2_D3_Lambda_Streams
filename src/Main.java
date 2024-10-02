@@ -23,6 +23,8 @@ public class Main {
         products.add(new Product(1254444464, "Culla", "Baby", 355.99));
         products.add(new Product(1254444464, "Latte in polvere", "Baby", 44.99));
         products.add(new Product(1254444464, "Harry Potter", "Books", 29.95));
+        products.add(new Product(1254458445, "Toy Bear", "Boys", 55.00));
+        products.add(new Product(855223445, "Puzzle", "Boys", 85.50));
 
         // Stampo la lista dei prodotti
         products.forEach(System.out::println);
@@ -68,7 +70,29 @@ public class Main {
 
         // Stampo gli ordini che contengono prodotti della categoria "Baby"
         listOfBabyOrders.forEach(System.out::println);
+
+
+        System.out.println("--------------------Lista categoria Boys con sconto del 10%--------------------");
+
+        // Filtro i prodotti della categoria "Boys" e applico lo sconto del 10% usando map
+        List<Product> boysProductsWithDiscount = products.stream()
+                .filter(p -> p.getCategory().equals("Boys")) // Filtro per categoria Boys
+                .map(p -> {  // Applico lo sconto del 10% con map
+                    p.setPrice(p.getPrice() * 0.9);
+                    return p;
+                })
+                .collect(Collectors.toList());
+
+        // Stampo i prodotti
+        for (Product product : boysProductsWithDiscount) {
+            System.out.println("ID: " + product.getId());
+            System.out.println("Nome: " + product.getName());
+            System.out.println("Categoria: " + product.getCategory());
+            System.out.println("Prezzo (con sconto): " + product.getPrice());
+            System.out.println("--------------------------");
+        }
     }
+
 
     // Metodo per filtrare libri con prezzo > 100
     public static List<Product> listBook(List<Product> products) {
