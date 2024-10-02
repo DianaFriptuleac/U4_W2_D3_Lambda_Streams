@@ -2,6 +2,7 @@ package streams;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Order {
     private long id;
@@ -19,6 +20,15 @@ public class Order {
         this.deliveryDate = deliveryDate;
         this.products = products;
         this.customer = customer;
+    }
+
+    //Stream per prodotti Baby
+    public static List<Order> ordinaBaby(List<Order> babyOrders) {
+        return babyOrders.stream()  // Creo uno stream dai prodotti di ogni ordine
+                .filter(myOrder -> myOrder.getProducts()
+                        .stream().anyMatch(product -> product.getCategory()
+                                .equalsIgnoreCase("Baby")))  // se almeno un prodotto e della categoria Baby
+                .collect(Collectors.toList());
     }
 
     public long getId() {

@@ -18,8 +18,6 @@ public class Product {
 
 //Set and Get
 
-    //Stream per ottenere i Books > 100
-
     public static List<Product> listBook(List<Product> products) {     //List<Product>- tipo di ritorno;  Accetta come parametro una lista di Product con il nome products
         return products.stream().filter(product -> product.getCategory()
                         .equalsIgnoreCase("Books")).  //Verifico se la categoria e "Books" (non e case sensitive)
@@ -59,6 +57,9 @@ public class Product {
         this.price = price;
     }
 
+
+    //Stream per ottenere i Books > 100
+
     @Override
     public String toString() {
         return "Product{" +
@@ -68,4 +69,6 @@ public class Product {
                 ", price ='" + price + '\'' +
                 '}';
     }
+
+
 }
